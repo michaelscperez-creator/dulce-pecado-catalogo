@@ -13,11 +13,14 @@ Abre http://localhost:3000.
 
 ## Publicar en Vercel
 
-1. Sube esta carpeta a un repositorio de GitHub.
-2. En Vercel, elige **Add New → Project** e importa el repositorio.
-3. Vercel detectará Next.js automáticamente; no hace falta cambiar el comando de build.
-4. Opcional: define NEXT_PUBLIC_SITE_URL con el dominio final para que las imágenes sociales usen la URL pública correcta.
-5. Pulsa **Deploy** y comprueba la URL de producción.
+El repositorio `michaelscperez-creator/dulce-pecado-catalogo` ya está conectado a Vercel. La publicación se activa al subir los cambios a la rama `main`.
+
+1. Revisa y confirma los cambios locales.
+2. Crea el commit y súbelo a `main`.
+3. Espera el despliegue automático de Vercel.
+4. Comprueba la URL pública en móvil y desktop.
+
+Opcional: define `NEXT_PUBLIC_SITE_URL` con el dominio final para que las imágenes sociales usen la URL pública correcta.
 
 El proyecto usa exportación estática. La salida local de producción se genera con:
 

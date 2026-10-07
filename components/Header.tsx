@@ -1,30 +1,36 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 42);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="site-header">
+    <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       <a href="#inicio" className="brand" aria-label="Dulce Pecado, volver al inicio">
         <span className="brand-logo" aria-hidden="true">
           <Image src="/images/logo-original.png" alt="" width={3375} height={3375} priority />
         </span>
         <span className="brand-wordmark">Dulce Pecado</span>
       </a>
-      <nav className="nav-links" aria-label="Navegación principal">
-        <a href="#catalogo">Catálogo</a>
-        <a href="#historia">La marca</a>
-        <a href="#pedido">Cómo pedir</a>
-      </nav>
-      <button
-        className="header-order"
-        type="button"
-        onClick={() => window.dispatchEvent(new Event("open-dp-cart"))}
-        aria-label="Abrir mi pedido"
-      >
-        <span>Mi pedido</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 6l6 6-6 6" /></svg>
+      <button className="menu-toggle" type="button" aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} onClick={() => setMenuOpen((current) => !current)}>
+        <span /><span />
       </button>
+      <nav className={`nav-links ${menuOpen ? "is-open" : ""}`} aria-label="Navegación principal">
+        <a href="#catalogo" onClick={() => setMenuOpen(false)}>Catálogo</a>
+        <a href="#nosotros" onClick={() => setMenuOpen(false)}>Nosotros</a>
+        <a href="#pedir" onClick={() => setMenuOpen(false)}>Pedir</a>
+      </nav>
+      <a className="header-order magnetic" href="#catalogo">Elegir mi pecado <span aria-hidden="true">↘</span></a>
     </header>
   );
 }

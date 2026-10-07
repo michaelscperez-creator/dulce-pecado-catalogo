@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     template: "%s | Dulce Pecado",
   },
   description:
-    "Catálogo digital de Dulce Pecado: postres, cheesecakes, brownies, Tres Leches, alfajores y mesas de dulces. Arma tu pedido y envíalo por WhatsApp.",
-  keywords: ["repostería", "postres", "brownies", "tres leches", "cheesecake", "alfajores", "mesa de dulces", "Santo Domingo"],
+    "Catálogo digital de Dulce Pecado: Tres Leches, brownies, alfajores y galletas artesanales en Santo Domingo. Pide por WhatsApp.",
+  keywords: ["repostería", "postres", "brownies", "tres leches", "alfajores", "galletas", "Santo Domingo"],
   authors: [{ name: "Dulce Pecado" }],
   icons: { icon: "/favicon.svg" },
   openGraph: {
@@ -20,13 +20,13 @@ export const metadata: Metadata = {
     description: "Postres hechos para antojarte. Descubre el catálogo y pide por WhatsApp.",
     type: "website",
     locale: "es_DO",
-    images: [{ url: "/images/hero-cupcakes.webp", width: 1122, height: 1402, alt: "Cupcakes de Dulce Pecado" }],
+    images: [{ url: "/images/hero-products.webp", width: 1484, height: 1113, alt: "Brownies y alfajores de Dulce Pecado" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Dulce Pecado",
     description: "Postres hechos para antojarte.",
-    images: ["/images/hero-cupcakes.webp"],
+    images: ["/images/hero-products.webp"],
   },
 };
 
