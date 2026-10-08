@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/Cart";
 import { site } from "@/data/site";
+import { inertOutside, restoreFocus } from "@/components/modal";
 
 const links = [
   { href: "#carta", label: "La carta" },
@@ -18,6 +19,8 @@ export default function Header() {
   const [hidden, setHidden] = useState(false);
   const [menu, setMenu] = useState(false);
   const last = useRef(0);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -41,6 +44,15 @@ export default function Header() {
     return () => { window.removeEventListener("keydown", onKey); document.body.classList.remove("menu-open"); };
   }, [menu]);
 
+  // Menú abierto = diálogo modal: foco dentro, el resto inerte, y al cerrar vuelve al botón.
+  useEffect(() => {
+    if (!menu || !overlayRef.current) return;
+    const trigger = burgerRef.current;
+    const undo = inertOutside(overlayRef.current, [burgerRef.current]);
+    const t = window.setTimeout(() => overlayRef.current?.querySelector<HTMLElement>("a, button")?.focus(), 420);
+    return () => { window.clearTimeout(t); undo(); restoreFocus(trigger); };
+  }, [menu]);
+
   return (
     <>
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${hidden && !menu ? "is-hidden" : ""} ${menu ? "menu-on" : ""}`}>
@@ -56,13 +68,13 @@ export default function Header() {
             <span>Mi pedido</span>
             <b className={count ? "has-items" : ""}>{count}</b>
           </button>
-          <button className={`burger ${menu ? "is-open" : ""}`} type="button" aria-label={menu ? "Cerrar menú" : "Abrir menú"} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+          <button ref={burgerRef} className={`burger ${menu ? "is-open" : ""}`} type="button" aria-label={menu ? "Cerrar menú" : "Abrir menú"} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
             <span /><span />
           </button>
         </div>
       </header>
 
-      <div className={`menu-overlay ${menu ? "is-open" : ""}`} inert={!menu}>
+      <div ref={overlayRef} className={`menu-overlay ${menu ? "is-open" : ""}`} inert={!menu} role={menu ? "dialog" : undefined} aria-modal={menu ? "true" : undefined} aria-label={menu ? "Menú" : undefined}>
         <nav aria-label="Menú">
           {links.map((l, i) => (
             <a key={l.href} href={l.href} style={{ "--i": i } as React.CSSProperties} onClick={() => setMenu(false)}>

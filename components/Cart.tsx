@@ -4,6 +4,7 @@ import Image from "next/image";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { allItems, type Item } from "@/data/products";
 import { openWhatsApp } from "@/data/site";
+import { inertOutside, restoreFocus } from "@/components/modal";
 
 type Line = { id: string; qty: number };
 type SheetKind = "contact" | "quote";
@@ -87,6 +88,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const cartNameRef = useRef<HTMLInputElement>(null);
   const sheetNameRef = useRef<HTMLInputElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     try {
@@ -110,6 +114,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [lines, name, ready]);
 
   const anyOpen = cartOpen || sheet !== null;
+
+  // Guarda quién abrió el modal y le devuelve el foco al cerrarlo.
+  useEffect(() => {
+    if (!anyOpen) return;
+    triggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    return () => restoreFocus(triggerRef.current);
+  }, [anyOpen]);
+
+  // Mientras hay un modal abierto, todo lo demás queda inerte (el foco no se escapa).
+  useEffect(() => {
+    const modal = cartOpen ? drawerRef.current : sheet ? sheetRef.current : null;
+    if (!modal) return;
+    return inertOutside(modal);
+  }, [cartOpen, sheet]);
+
   useEffect(() => {
     document.body.classList.toggle("locked", anyOpen);
     const t = window.setTimeout(() => {
@@ -216,11 +235,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         <span className="bar-total">{subtotal ? money(subtotal) : "Por cotizar"}</span>
       </button>
 
-      <div className={`drawer ${cartOpen ? "is-open" : ""}`} inert={!cartOpen}>
+      <div ref={drawerRef} className={`drawer ${cartOpen ? "is-open" : ""}`} inert={!cartOpen}>
         <button className="drawer-backdrop" type="button" tabIndex={-1} aria-label="Cerrar pedido" onClick={() => setCartOpen(false)} />
-        <aside className="drawer-panel" role="dialog" aria-modal="true" aria-label="Mi pedido">
+        <div className="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
           <header className="drawer-head">
-            <div><span className="eyebrow">Dulce Pecado</span><h2>Mi pedido</h2></div>
+            <div><span className="eyebrow">Dulce Pecado</span><h2 id="drawer-title">Mi pedido</h2></div>
             <button ref={closeRef} type="button" className="icon-btn" aria-label="Cerrar" onClick={() => setCartOpen(false)}>×</button>
           </header>
           {detailed.length ? (
@@ -268,16 +287,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               <button type="button" className="btn btn-line" onClick={() => setCartOpen(false)}>Ver la carta</button>
             </div>
           )}
-        </aside>
+        </div>
       </div>
 
-      <div className={`sheet ${sheet ? "is-open" : ""}`} inert={!sheet}>
+      <div ref={sheetRef} className={`sheet ${sheet ? "is-open" : ""}`} inert={!sheet}>
         <button className="drawer-backdrop" type="button" tabIndex={-1} aria-label="Cerrar" onClick={() => setSheet(null)} />
-        <section className="sheet-panel" role="dialog" aria-modal="true" aria-label={sheet === "quote" ? "Cotizar mesa de dulces" : "Escríbenos"}>
+        <div className="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
           <header className="sheet-head">
             <div>
               <span className="eyebrow">{sheet === "quote" ? "Eventos" : "WhatsApp"}</span>
-              <h2>{sheet === "quote" ? "Cotiza tu mesa de dulces" : "Cuéntanos qué se te antoja"}</h2>
+              <h2 id="sheet-title">{sheet === "quote" ? "Cotiza tu mesa de dulces" : "Cuéntanos qué se te antoja"}</h2>
             </div>
             <button type="button" className="icon-btn" aria-label="Cerrar" onClick={() => setSheet(null)}>×</button>
           </header>
@@ -298,7 +317,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             </button>
             <p className="sheet-note">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
           </div>
-        </section>
+        </div>
       </div>
 
       <div className={`toast ${toast ? "show" : ""}`} role="status" aria-live="polite">{toast}</div>

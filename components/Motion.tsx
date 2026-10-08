@@ -5,13 +5,15 @@ import { useEffect } from "react";
 export default function Motion() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-visible])"));
     const bar = document.querySelector<HTMLElement>(".progress");
 
-    if (reduce) reveals.forEach((n) => n.classList.add("is-visible"));
+    // Se usa un data-attribute (no una clase): React no lo toca al volver a renderizar className.
+    const show = (n: Element) => { (n as HTMLElement).dataset.visible = "true"; };
+    if (reduce) reveals.forEach(show);
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+        if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
       }),
       { threshold: 0.12, rootMargin: "0px 0px -6%" },
     );

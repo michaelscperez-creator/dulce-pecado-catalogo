@@ -38,7 +38,7 @@ export default function Menu() {
   };
 
   return (
-    <div className="show">
+    <div className="show" data-reveal>
       <ul className="show-track" ref={track}>
         {products.map((p, i) => (
           <li
@@ -46,8 +46,6 @@ export default function Menu() {
             className={`slide ${active === i ? "is-active" : ""}`}
             onMouseEnter={() => setActive(i)}
             onFocus={() => setActive(i)}
-            data-reveal
-            style={{ "--d": `${i * 0.06}s` } as React.CSSProperties}
           >
             <Image src={p.image} alt={p.imageAlt} fill sizes="(max-width: 959px) 80vw, 50vw" priority={i < 2} />
             <div className="slide-shade" aria-hidden="true" />
