@@ -570,3 +570,10 @@ body { letter-spacing: -0.005em; }
 .eventos-stamp { font-weight: 700; }
 .finale-word { font-weight: 800 !important; opacity: .9; }
 .footer-brand em, .footer-brand span { font-style: normal; font-weight: 500; }
+
+/* ---------- Revisión manual ---------- */
+body { letter-spacing: 0; word-spacing: .05em; }
+h1, h2, h3, h4, .eventos-list li, .values dd, .hero-tag, .story-lead, .brand-name, .footer-brand strong, .footer-brand span, .slide-body h3 { word-spacing: .09em; }
+.eventos-arch img { transform: translateY(var(--py, 0)) scale(1.3); transform-origin: 50% 40%; }
+.finale h2 { font-size: clamp(2.2rem, 10vw, 6.4rem); }
+.eventos-copy h2 { font-size: clamp(1.9rem, 7.8vw, 4.2rem); }
