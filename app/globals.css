@@ -16,8 +16,8 @@
   --gold: #e9b872;
   --line: rgba(42, 18, 13, 0.14);
   --line-light: rgba(255, 246, 240, 0.2);
-  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --sans: "DM Sans Variable", "Avenir Next", ui-sans-serif, -apple-system, BlinkMacSystemFont, sans-serif;
+  --serif: "Plus Jakarta Sans Variable", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sans: "Plus Jakarta Sans Variable", "Avenir Next", ui-sans-serif, -apple-system, BlinkMacSystemFont, sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --gutter: 20px;
@@ -443,9 +443,6 @@ p, li { text-wrap: pretty; }
 .btn:active, .add:active, .chip:active { transform: scale(.97); }
 .menu-cat, .eyebrow, .hero-kicker { font-feature-settings: "tnum" 1; }
 .menu-price strong, .extra-price, .bar-total, .subtotal strong { font-variant-numeric: lining-nums tabular-nums; }
-/* Instrument Serif es condensada: espaciado propio */
-h1, h2, h3, h4, .brand-name, .menu-price strong, .extra-price, .bar-total, .subtotal strong, .line-info h3, .story-lead, .values dd, .eventos-list li, .footer-brand strong, .finale-word, .eventos-stamp, .more-head h3 { letter-spacing: 0 !important; word-spacing: 0.08em; }
-.hero h1 { letter-spacing: -0.015em !important; word-spacing: 0; }
 
 /* ---------- Carta: tarjetas de producto ---------- */
 .pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
@@ -533,3 +530,43 @@ h1, h2, h3, h4, .brand-name, .menu-price strong, .extra-price, .bar-total, .subt
   .slide-add:hover { background: var(--pink); }
   .slide-add:hover i { background: #fff; }
 }
+
+/* ---------- Tipografía estilo app (Plus Jakarta Sans) ---------- */
+h1, h2, h3, h4, .brand-name, .menu-price strong, .extra-price, .bar-total, .subtotal strong, .line-info h3, .values dd, .eventos-list li, .footer-brand strong, .pprice strong, .slide-price strong, .show-count b, .eventos-stamp, .finale-word, .badge-mark { font-family: var(--serif); font-weight: 700; letter-spacing: -0.035em; word-spacing: 0; }
+h1 em, h2 em, h3 em, .story-lead, .hero-tag, .eventos-stamp, .finale-word, .footer-brand em { font-style: normal; }
+h2 em, h1 em { font-weight: 800; }
+.hero h1 { font-weight: 800; letter-spacing: -0.05em; font-size: clamp(3.9rem, 22vw, 7.6rem); line-height: .9; text-shadow: 0 6px 40px rgba(43,19,15,.35); }
+.hero h1 .ln { padding: .06em .08em .16em 0; margin-bottom: -.1em; }
+.hero-tag { font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.1rem, 4.4vw, 1.5rem); }
+.section-head h2 { font-size: clamp(2.2rem, 9.6vw, 5rem); line-height: 1.02; }
+.eventos-copy h2 { font-size: clamp(2rem, 8.4vw, 4.2rem); line-height: 1.04; }
+.story-copy h2 { font-size: clamp(2rem, 8.4vw, 4.2rem); line-height: 1.04; }
+.story-lead { font-weight: 600; font-size: clamp(1.15rem, 4.6vw, 1.7rem); letter-spacing: -0.02em; }
+.more-head h3 { font-size: clamp(1.8rem, 7.4vw, 3.2rem); line-height: 1.05; }
+.steps li h3 { font-size: clamp(1.5rem, 6vw, 2.3rem); }
+.finale h2 { font-size: clamp(2.3rem, 11vw, 6.4rem); line-height: 1; }
+.finale-word { font-weight: 800; letter-spacing: -0.06em; }
+.extra-main h4 { font-size: 1.3rem; font-weight: 700; }
+.extra-price { font-size: 1.25rem; }
+.slide-body h3 { font-size: clamp(2.2rem, 10vw, 3rem); font-weight: 800; line-height: 1; }
+.slide-vert { font-family: var(--serif); font-weight: 700; font-size: 1.5rem !important; letter-spacing: -0.02em; }
+.slide-price strong { font-weight: 700; font-size: 1.7rem; }
+.brand-name { font-size: 18px; letter-spacing: -0.03em; }
+.eventos-list li { font-size: 1.1rem; font-weight: 600; }
+.values dd { font-size: 1.1rem; font-weight: 600; }
+@media (min-width: 960px) {
+  .hero h1 { font-size: clamp(7rem, 15vw, 15rem); }
+  .section-head h2 { font-size: clamp(3.4rem, 6vw, 6.2rem); }
+  .eventos-copy h2, .story-copy h2 { font-size: clamp(2.8rem, 4.4vw, 4.6rem); }
+  .slide-body h3 { font-size: clamp(3rem, 4.6vw, 4.8rem); }
+  .slide-price strong { font-size: 2.2rem; }
+  .finale h2 { font-size: clamp(3.4rem, 7vw, 7.4rem); }
+  .brand-name { font-size: 20px; }
+}
+h1, h2, h3, h4, .hero-tag, .story-lead, .brand-name { word-spacing: .06em; }
+body { letter-spacing: -0.005em; }
+.section-head h2, .story-copy h2, .more-head h3, .eventos-copy h2, .steps li h3, .finale h2, .menu-main h3, .extra-main h4, .footer-brand strong, .drawer-head h2, .sheet-head h2 { font-weight: 700 !important; letter-spacing: -0.04em !important; }
+.section-head h2 em, .story-copy h2 em, .eventos-copy h2 em, .finale h2 em, .more-head h3 em, .steps h2 em { font-weight: 700 !important; }
+.eventos-stamp { font-weight: 700; }
+.finale-word { font-weight: 800 !important; opacity: .9; }
+.footer-brand em, .footer-brand span { font-style: normal; font-weight: 500; }

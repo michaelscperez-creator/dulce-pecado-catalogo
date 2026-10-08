@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/dm-sans";
-import "@fontsource/instrument-serif/400.css";
-import "@fontsource/instrument-serif/400-italic.css";
+import "@fontsource-variable/plus-jakarta-sans";
 import "./globals.css";
 
 export const metadata: Metadata = {
