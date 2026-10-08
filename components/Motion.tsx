@@ -4,59 +4,43 @@ import { useEffect } from "react";
 
 export default function Motion() {
   useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
-    if (reduceMotion) {
-      reveals.forEach((node) => node.classList.add("is-visible"));
-      return;
-    }
+    const bar = document.querySelector<HTMLElement>(".progress");
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14, rootMargin: "0px 0px -5%" });
-    reveals.forEach((node) => observer.observe(node));
+    if (reduce) reveals.forEach((n) => n.classList.add("is-visible"));
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+      }),
+      { threshold: 0.12, rootMargin: "0px 0px -6%" },
+    );
+    if (!reduce) reveals.forEach((n) => io.observe(n));
 
     const parallax = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
     let frame = 0;
     const update = () => {
       frame = 0;
-      parallax.forEach((node) => {
-        const rect = node.getBoundingClientRect();
-        const progress = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
-        node.style.setProperty("--parallax-y", `${Math.max(-28, Math.min(28, progress * -34))}px`);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (bar && max > 0) bar.style.transform = `scaleX(${Math.min(1, window.scrollY / max)})`;
+      if (reduce) return;
+      parallax.forEach((n) => {
+        const r = n.getBoundingClientRect();
+        const p = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
+        n.style.setProperty("--py", `${Math.max(-40, Math.min(40, p * -48)).toFixed(1)}px`);
       });
     };
-    const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(update); };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-
-    const magnetic = Array.from(document.querySelectorAll<HTMLElement>(".magnetic"));
-    const cleanups = magnetic.map((node) => {
-      const move = (event: MouseEvent) => {
-        const rect = node.getBoundingClientRect();
-        node.style.setProperty("--magnetic-x", `${(event.clientX - rect.left - rect.width / 2) * 0.12}px`);
-        node.style.setProperty("--magnetic-y", `${(event.clientY - rect.top - rect.height / 2) * 0.12}px`);
-      };
-      const leave = () => {
-        node.style.setProperty("--magnetic-x", "0px");
-        node.style.setProperty("--magnetic-y", "0px");
-      };
-      node.addEventListener("mousemove", move);
-      node.addEventListener("mouseleave", leave);
-      return () => { node.removeEventListener("mousemove", move); node.removeEventListener("mouseleave", leave); };
-    });
-
+    window.addEventListener("resize", onScroll);
     return () => {
-      observer.disconnect();
+      io.disconnect();
       window.removeEventListener("scroll", onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-      cleanups.forEach((cleanup) => cleanup());
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
     };
   }, []);
-  return null;
+
+  return <div className="progress" aria-hidden="true" />;
 }
