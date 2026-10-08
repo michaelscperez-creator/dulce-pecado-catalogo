@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/manrope";
-import "@fontsource-variable/fraunces";
-import "@fontsource-variable/fraunces/wght-italic.css";
+import "@fontsource-variable/dm-sans";
+import "@fontsource/instrument-serif/400.css";
+import "@fontsource/instrument-serif/400-italic.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

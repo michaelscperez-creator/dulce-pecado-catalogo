@@ -17,25 +17,10 @@ const structuredData = {
   address: { "@type": "PostalAddress", addressLocality: "Santo Domingo", addressCountry: "DO" },
 };
 
-const ribbonA = ["Pecar sabe mejor", "Hecho por encargo", "Brownies", "Tres Leches", "Alfajores", "Galletas", "Cupcakes"];
-const ribbonB = ["Mesa de dulces", "Eventos", "Cheesecake", "Cajas de bocados", "Beso de Ángel", "Flan"];
-
 function Sprinkles({ n = 12 }: { n?: number }) {
   return (
     <div className="sprinkles" aria-hidden="true">
       {Array.from({ length: n }, (_, i) => <span key={i} style={{ "--k": i } as React.CSSProperties} />)}
-    </div>
-  );
-}
-
-function Ribbon({ words, reverse = false }: { words: string[]; reverse?: boolean }) {
-  return (
-    <div className={`ribbon ${reverse ? "reverse" : ""}`} aria-hidden="true">
-      <div className="ribbon-track">
-        {[0, 1].map((g) => (
-          <span key={g}>{words.map((w) => (<span key={w}>{w}<b>✦</b></span>))}</span>
-        ))}
-      </div>
     </div>
   );
 }
@@ -69,8 +54,6 @@ export default function Home() {
           <a href="#carta" className="cue" aria-label="Bajar a la carta"><i aria-hidden="true" /><span>Descubrir</span></a>
         </section>
 
-        <Ribbon words={ribbonA} />
-
         <section className="carta" id="carta">
           <div className="wrap">
             <header className="section-head" data-reveal>
@@ -90,8 +73,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <Ribbon words={ribbonB} reverse />
 
         <section className="eventos" id="eventos">
           <Sprinkles n={8} />
