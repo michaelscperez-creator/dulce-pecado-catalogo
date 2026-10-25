@@ -7,6 +7,7 @@ import { site } from "@/data/site";
 import { inertOutside, restoreFocus } from "@/components/modal";
 
 const links = [
+  { href: "#navidad", label: "Navidad" },
   { href: "#carta", label: "La carta" },
   { href: "#eventos", label: "Eventos" },
   { href: "#nosotros", label: "Nosotros" },

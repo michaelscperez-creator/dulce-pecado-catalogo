@@ -5,19 +5,33 @@ import { useEffect } from "react";
 export default function Motion() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-visible])"));
     const bar = document.querySelector<HTMLElement>(".progress");
 
     // Se usa un data-attribute (no una clase): React no lo toca al volver a renderizar className.
     const show = (n: Element) => { (n as HTMLElement).dataset.visible = "true"; };
-    if (reduce) reveals.forEach(show);
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => {
         if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
       }),
       { threshold: 0.12, rootMargin: "0px 0px -6%" },
     );
-    if (!reduce) reveals.forEach((n) => io.observe(n));
+    const registered = new WeakSet<Element>();
+    const observe = (node: Element) => {
+      if (registered.has(node) || node.getAttribute("data-visible") === "true") return;
+      registered.add(node);
+      if (reduce) show(node);
+      else io.observe(node);
+    };
+    document.querySelectorAll("[data-reveal]").forEach(observe);
+    // También registra contenido que React reemplace después del primer montaje.
+    const additions = new MutationObserver((changes) => {
+      changes.forEach((change) => change.addedNodes.forEach((node) => {
+        if (!(node instanceof Element)) return;
+        if (node.matches("[data-reveal]")) observe(node);
+        node.querySelectorAll("[data-reveal]").forEach(observe);
+      }));
+    });
+    additions.observe(document.body, { childList: true, subtree: true });
 
     const parallax = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
     let frame = 0;
@@ -38,6 +52,7 @@ export default function Motion() {
     window.addEventListener("resize", onScroll);
     return () => {
       io.disconnect();
+      additions.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);

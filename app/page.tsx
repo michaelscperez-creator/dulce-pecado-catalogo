@@ -3,9 +3,11 @@ import Header from "@/components/Header";
 import Menu from "@/components/Menu";
 import Extras from "@/components/Extras";
 import Motion from "@/components/Motion";
+import ChristmasAtmosphere from "@/components/ChristmasAtmosphere";
 import SheetButton from "@/components/SheetButton";
 import { CartProvider } from "@/components/Cart";
 import { site } from "@/data/site";
+import "./christmas.css";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -17,49 +19,68 @@ const structuredData = {
   address: { "@type": "PostalAddress", addressLocality: "Santo Domingo", addressCountry: "DO" },
 };
 
-function Sprinkles({ n = 12 }: { n?: number }) {
-  return (
-    <div className="sprinkles" aria-hidden="true">
-      {Array.from({ length: n }, (_, i) => <span key={i} style={{ "--k": i } as React.CSSProperties} />)}
-    </div>
-  );
-}
-
 export default function Home() {
   return (
     <CartProvider>
       <Motion />
+      <ChristmasAtmosphere />
       <a className="skip" href="#carta">Saltar a la carta</a>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <main>
-        <section className="hero" id="inicio">
-          <div className="hero-bg" data-parallax aria-hidden="true">
-            <Image src="/images/hero-products.webp" alt="" fill priority sizes="100vw" />
-          </div>
+      <main className="christmas">
+        <section className="christmas-hero" id="inicio" aria-labelledby="christmas-title">
           <Header />
-          <Sprinkles n={10} />
-          <div className="hero-inner">
-            <p className="hero-kicker"><i aria-hidden="true" />Repostería artesanal · Santo Domingo</p>
-            <h1 aria-label="Dulce Pecado">
-              <span className="ln"><span>Dulce</span></span>
-              <span className="ln"><span><em>Pecado</em></span></span>
+          <div className="christmas-hero-copy">
+            <p className="christmas-kicker"><span aria-hidden="true" /> Edición de Navidad <b>/ 2026</b></p>
+            <h1 id="christmas-title" aria-label="Esta Navidad, regala un dulce pecado.">
+              <span className="christmas-title-line">Esta Navidad,</span>
+              <span className="christmas-title-line">regala un</span>
+              <span className="christmas-title-line"><em>dulce pecado.</em></span>
             </h1>
-            <p className="hero-tag">Pecar sabe mejor.</p>
-            <div className="hero-actions">
-              <a className="btn btn-pink pulse" href="#carta">Elegir mi pecado <span aria-hidden="true">↓</span></a>
-              <SheetButton kind="contact" className="btn btn-ghost">Pedir por WhatsApp <span aria-hidden="true">↗</span></SheetButton>
+            <p className="christmas-intro">Para regalar, compartir y celebrar juntos.</p>
+            <div className="christmas-actions">
+              <a className="btn btn-dark" href="#navidad">Descubrir la Navidad <span aria-hidden="true">↗</span></a>
+              <a className="christmas-text-link" href="#carta">Ver la carta habitual <span aria-hidden="true">→</span></a>
+            </div>
+            <p className="christmas-season-note"><span /> Colección navideña en preparación</p>
+          </div>
+          <div className="christmas-hero-photo">
+            <Image src="/images/navidad-pino.webp" alt="Galletas en forma de árbol, estrella y bastón de Navidad entre ramas de pino" fill priority sizes="100vw" />
+          </div>
+          <div className="christmas-hero-bottom"><span>Repostería artesanal <i aria-hidden="true">·</i> Santo Domingo</span><a href="#navidad" aria-label="Explorar el adelanto navideño"><span>Un primer vistazo</span><i aria-hidden="true">↓</i></a></div>
+        </section>
+
+        <section className="christmas-preview" id="navidad" aria-labelledby="christmas-preview-title">
+          <div className="wrap christmas-preview-layout">
+            <header className="christmas-preview-head">
+              <div>
+                <span className="eyebrow">Un primer vistazo</span>
+                <h2 id="christmas-preview-title">Ya se siente<br /><em>la Navidad.</em></h2>
+              </div>
+              <div className="christmas-preview-note">
+                <span className="christmas-status">Próximamente</span>
+                <p>Estamos preparando algo especial para estas fiestas. Pronto conocerás la colección, sus presentaciones y precios.</p>
+              </div>
+              <a href={site.instagramUrl} target="_blank" rel="noreferrer" className="christmas-text-link">Ver novedades en Instagram <span aria-hidden="true">↗</span></a>
+            </header>
+            <div className="christmas-gallery">
+              <figure>
+                <div className="christmas-gallery-image"><Image src="/images/navidad-rosa.webp" alt="Galletas decoradas con árboles, estrellas y bastones de Navidad sobre fondo rosa" fill sizes="(min-width: 1300px) 342px, (min-width: 960px) 29vw, 44vw" /></div>
+                <figcaption>El lado más dulce de la Navidad.</figcaption>
+              </figure>
+              <figure>
+                <div className="christmas-gallery-image"><Image src="/images/navidad-arbol.webp" alt="Detalle de una galleta en forma de árbol de Navidad con glaseado verde, blanco y rojo" fill sizes="(min-width: 1300px) 342px, (min-width: 960px) 29vw, 44vw" /></div>
+                <figcaption>La magia está en los detalles.</figcaption>
+              </figure>
             </div>
           </div>
-          <span className="vertical" aria-hidden="true">Catálogo / 2026</span>
-          <a href="#carta" className="cue" aria-label="Bajar a la carta"><i aria-hidden="true" /><span>Descubrir</span></a>
         </section>
 
         <section className="carta" id="carta">
           <div className="wrap">
             <header className="section-head" data-reveal>
-              <span className="eyebrow">01 — La carta</span>
-              <h2>Elige tu <em>debilidad.</em></h2>
-              <p>Agrega lo que se te antoje a tu pedido, combina varios postres y envíalo completo por WhatsApp en un solo mensaje.</p>
+              <span className="eyebrow">Nuestra carta habitual</span>
+              <h2>Tus favoritos,<br /><em>todo el año.</em></h2>
+              <p>Mientras llega la colección navideña, explora nuestra carta habitual. Combina tus favoritos y consulta disponibilidad por WhatsApp.</p>
             </header>
             <Menu />
 
@@ -75,7 +96,6 @@ export default function Home() {
         </section>
 
         <section className="eventos" id="eventos">
-          <Sprinkles n={8} />
           <div className="wrap eventos-grid">
             <div className="eventos-visual" data-reveal="zoom">
               <div className="eventos-arch" data-parallax>
@@ -84,9 +104,9 @@ export default function Home() {
               <span className="eventos-stamp" aria-hidden="true">Mesa<br />de dulces</span>
             </div>
             <div className="eventos-copy" data-reveal>
-              <span className="eyebrow">02 — Eventos</span>
-              <h2>Tu celebración merece <em>una mesa irresistible.</em></h2>
-              <p>Cumpleaños, bodas, baby showers y reuniones: armamos una mesa de dulces a tu medida. Se cotiza por WhatsApp, según la fecha, la cantidad de personas y el estilo que imaginas.</p>
+              <span className="eyebrow">Para celebrar juntos</span>
+              <h2>Una mesa dulce.<br /><em>Muchos buenos momentos.</em></h2>
+              <p>Una reunión en familia, un encuentro con amigos o la celebración de tu equipo. Cuéntanos tu idea y consultamos opciones según la fecha, la cantidad de personas y el estilo que imaginas.</p>
               <ul className="eventos-list">
                 <li>Cuéntanos tu evento</li>
                 <li>Te enviamos opciones y precio</li>
@@ -137,11 +157,10 @@ export default function Home() {
         </section>
 
         <section className="finale">
-          <Sprinkles n={10} />
           <div className="finale-word" aria-hidden="true" data-parallax>¿pecamos?</div>
           <div className="wrap finale-inner" data-reveal="zoom">
-            <span className="eyebrow">Tu próximo favorito te espera</span>
-            <h2>Pecar sabe <em>mejor.</em></h2>
+            <span className="eyebrow">Dulce Pecado · Navidad 2026</span>
+            <h2>Lo dulce se<br /><em>comparte.</em></h2>
             <SheetButton kind="contact" className="btn btn-dark btn-lg pulse">Pedir por WhatsApp <span aria-hidden="true">↗</span></SheetButton>
           </div>
         </section>
